@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI検索 - DocuMind</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>📁 DocuMind</h1>
+      </div>
+      <nav>
+        <ul class="sidebar-nav">
+          <li><a href="dashboard.html"><span class="icon">🏠</span> ダッシュボード</a></li>
+          <li><a href="documents.html"><span class="icon">📄</span> 文書一覧</a></li>
+          <li><a href="search.html" class="active"><span class="icon">🔍</span> AI検索</a></li>
+          <li><a href="#"><span class="icon">📁</span> フォルダ</a></li>
+          <li><a href="#"><span class="icon">⭐</span> お気に入り</a></li>
+          <li><a href="#"><span class="icon">🕐</span> 最近の文書</a></li>
+          <li><a href="#"><span class="icon">👥</span> 共有中</a></li>
+          <li><a href="#"><span class="icon">⚙️</span> 設定</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+      <!-- ヘッダー -->
+      <header class="header">
+        <div class="search-bar">
+          <span class="icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="AI検索で文書を探す（例: 昨年の売上報告書はどこ？）" value="2025年度 事業計画">
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary btn-sm" onclick="alert('アップロード機能（デモ）')">
+            ⬆️ アップロード
+          </button>
+          <div style="position: relative;">
+            <button class="icon-btn" style="position: relative;">
+              🔔
+              <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: red; border-radius: 50%;"></span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar">山</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 500;">山田太郎</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">管理者</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- コンテンツ -->
+      <div class="content">
+        <div class="page-header">
+          <h1>🤖 AI検索</h1>
+          <p>自然言語で文書を検索できます。質問形式での検索にも対応しています。</p>
+        </div>
+
+        <!-- 検索タイプ -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; gap: 16px;">
+            <button class="btn btn-primary" id="semanticBtn">
+              🤖 セマンティック検索（AI）
+            </button>
+            <button class="btn btn-secondary" id="keywordBtn" onclick="switchSearchType('keyword')">
+              🔤 キーワード検索
+            </button>
+          </div>
+          <div style="margin-top: 16px; padding: 16px; background: rgba(59, 130, 246, 0.05); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+            <strong>💡 ヒント:</strong>
+            <span style="color: var(--text-secondary);">
+              「昨年の売上報告書」「ABC社との契約書」「セキュリティポリシー」など、自然な言葉で検索してください。
+            </span>
+          </div>
+        </div>
+
+        <!-- 検索結果 -->
+        <div class="card">
+          <div class="card-header">
+            <h2>検索結果</h2>
+            <div style="color: var(--text-secondary); font-size: 14px;">
+              「<strong>2025年度 事業計画</strong>」の検索結果 - <strong>3</strong>件見つかりました（0.35秒）
+            </div>
+          </div>
+
+          <div id="searchResults">
+            <!-- JavaScriptで動的に生成 -->
+          </div>
+        </div>
+
+        <!-- 検索例 -->
+        <div class="card">
+          <div class="card-header">
+            <h2>検索例</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: var(--background); border-radius: 8px; cursor: pointer;" onclick="performSearch('昨年の売上報告書')">
+              <div style="font-weight: 500; margin-bottom: 8px;">📊 昨年の売上報告書</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">財務関連の報告書を検索</div>
+            </div>
+            <div style="padding: 16px; background: var(--background); border-radius: 8px; cursor: pointer;" onclick="performSearch('ABC社との契約書')">
+              <div style="font-weight: 500; margin-bottom: 8px;">📄 ABC社との契約書</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">特定の会社の契約書を検索</div>
+            </div>
+            <div style="padding: 16px; background: var(--background); border-radius: 8px; cursor: pointer;" onclick="performSearch('製品の仕様書')">
+              <div style="font-weight: 500; margin-bottom: 8px;">⚙️ 製品の仕様書</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">技術文書を検索</div>
+            </div>
+            <div style="padding: 16px; background: var(--background); border-radius: 8px; cursor: pointer;" onclick="performSearch('セキュリティポリシー')">
+              <div style="font-weight: 500; margin-bottom: 8px;">🔒 セキュリティポリシー</div>
+              <div style="font-size: 13px; color: var(--text-secondary);">社内規定を検索</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="data/mock-data.js"></script>
+  <script>
+    const typeEmojis = {
+      'pdf': '📕',
+      'docx': '📘',
+      'xlsx': '📗',
+      'pptx': '📙'
+    };
+
+    // 検索結果を表示
+    function displayResults() {
+      const resultsContainer = document.getElementById('searchResults');
+      resultsContainer.innerHTML = '';
+
+      mockData.searchResults.forEach(result => {
+        resultsContainer.innerHTML += `
+          <div style="padding: 24px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s;"
+               onmouseover="this.style.background='var(--background)'"
+               onmouseout="this.style.background='white'"
+               onclick="window.location.href='document-detail.html?id=${result.id}'">
+            <div style="display: flex; gap: 16px;">
+              <div style="font-size: 36px;">${typeEmojis[result.type]}</div>
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                  <h3 style="font-size: 18px; color: var(--primary-color); margin: 0;">${result.name}</h3>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge badge-success">関連度: ${result.relevance}%</span>
+                    <span class="badge badge-primary">${result.type.toUpperCase()}</span>
+                  </div>
+                </div>
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">
+                  📁 ${result.folder} • 📅 ${result.createdAt}
+                </div>
+                <div style="font-size: 14px; line-height: 1.6; color: var(--text-primary);">
+                  ${result.snippet}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 検索タイプ切り替え
+    function switchSearchType(type) {
+      const semanticBtn = document.getElementById('semanticBtn');
+      const keywordBtn = document.getElementById('keywordBtn');
+
+      if (type === 'keyword') {
+        semanticBtn.className = 'btn btn-secondary';
+        keywordBtn.className = 'btn btn-primary';
+        alert('キーワード検索モードに切り替えました（デモ）');
+      } else {
+        semanticBtn.className = 'btn btn-primary';
+        keywordBtn.className = 'btn btn-secondary';
+      }
+    }
+
+    // 検索実行
+    function performSearch(query) {
+      document.getElementById('searchInput').value = query;
+      alert(`「${query}」で検索します（デモ）`);
+      // 実際には検索APIを呼び出して結果を表示
+    }
+
+    // 検索入力のエンターキー対応
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        performSearch(this.value);
+      }
+    });
+
+    // 初期表示
+    displayResults();
+  </script>
+</body>
+</html>

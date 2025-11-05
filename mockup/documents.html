@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文書一覧 - DocuMind</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>📁 DocuMind</h1>
+      </div>
+      <nav>
+        <ul class="sidebar-nav">
+          <li><a href="dashboard.html"><span class="icon">🏠</span> ダッシュボード</a></li>
+          <li><a href="documents.html" class="active"><span class="icon">📄</span> 文書一覧</a></li>
+          <li><a href="search.html"><span class="icon">🔍</span> AI検索</a></li>
+          <li><a href="#"><span class="icon">📁</span> フォルダ</a></li>
+          <li><a href="#"><span class="icon">⭐</span> お気に入り</a></li>
+          <li><a href="#"><span class="icon">🕐</span> 最近の文書</a></li>
+          <li><a href="#"><span class="icon">👥</span> 共有中</a></li>
+          <li><a href="#"><span class="icon">⚙️</span> 設定</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+      <!-- ヘッダー -->
+      <header class="header">
+        <div class="search-bar">
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="AI検索で文書を探す（例: 昨年の売上報告書はどこ？）" onclick="window.location.href='search.html'">
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary btn-sm" onclick="alert('アップロード機能（デモ）')">
+            ⬆️ アップロード
+          </button>
+          <div style="position: relative;">
+            <button class="icon-btn" style="position: relative;">
+              🔔
+              <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: red; border-radius: 50%;"></span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar">山</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 500;">山田太郎</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">管理者</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- コンテンツ -->
+      <div class="content">
+        <div class="page-header">
+          <h1>文書一覧</h1>
+          <p>組織内のすべての文書を管理・閲覧できます</p>
+        </div>
+
+        <!-- フィルターとビュー切り替え -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; gap: 12px; flex: 1;">
+              <select class="form-control" style="width: auto;">
+                <option>すべてのフォルダ</option>
+                <option>経営資料</option>
+                <option>契約書</option>
+                <option>営業資料</option>
+                <option>財務資料</option>
+              </select>
+              <select class="form-control" style="width: auto;">
+                <option>すべての種類</option>
+                <option>PDF</option>
+                <option>Word</option>
+                <option>Excel</option>
+                <option>PowerPoint</option>
+              </select>
+              <select class="form-control" style="width: auto;">
+                <option>作成日: 新しい順</option>
+                <option>作成日: 古い順</option>
+                <option>名前: 昇順</option>
+                <option>名前: 降順</option>
+                <option>閲覧数: 多い順</option>
+              </select>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="icon-btn" onclick="switchView('grid')" id="gridViewBtn" style="background-color: var(--primary-color); color: white;">
+                ⊞
+              </button>
+              <button class="icon-btn" onclick="switchView('list')" id="listViewBtn">
+                ☰
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- グリッドビュー -->
+        <div id="gridView" class="documents-grid">
+          <!-- JavaScriptで動的に生成 -->
+        </div>
+
+        <!-- リストビュー -->
+        <div id="listView" class="card" style="display: none;">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>文書名</th>
+                  <th>種類</th>
+                  <th>フォルダ</th>
+                  <th>作成者</th>
+                  <th>作成日</th>
+                  <th>閲覧数</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="documentsList">
+                <!-- JavaScriptで動的に生成 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="data/mock-data.js"></script>
+  <script>
+    const typeColors = {
+      'pdf': '#EF4444',
+      'docx': '#3B82F6',
+      'xlsx': '#10B981',
+      'pptx': '#F59E0B'
+    };
+
+    const typeEmojis = {
+      'pdf': '📕',
+      'docx': '📘',
+      'xlsx': '📗',
+      'pptx': '📙'
+    };
+
+    // グリッドビュー生成
+    const gridView = document.getElementById('gridView');
+    mockData.documents.forEach(doc => {
+      gridView.innerHTML += `
+        <div class="document-card" onclick="window.location.href='document-detail.html?id=${doc.id}'">
+          <div class="document-thumbnail" style="background: ${typeColors[doc.type]};">
+            <span style="font-size: 64px;">${typeEmojis[doc.type]}</span>
+          </div>
+          <div class="document-info">
+            <div class="document-title">${doc.name}</div>
+            <div class="document-meta">
+              <span>📁 ${doc.folder}</span>
+              <span>👁️ ${doc.views}</span>
+            </div>
+            <div class="document-tags">
+              ${doc.tags.map(tag => `<span class="badge badge-primary">${tag}</span>`).join('')}
+            </div>
+            <div style="margin-top: 12px; font-size: 13px; color: var(--text-secondary);">
+              <div>👤 ${doc.createdBy}</div>
+              <div>📅 ${doc.createdAt}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    // リストビュー生成
+    const listView = document.getElementById('documentsList');
+    mockData.documents.forEach(doc => {
+      listView.innerHTML += `
+        <tr onclick="window.location.href='document-detail.html?id=${doc.id}'" style="cursor: pointer;">
+          <td>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 24px;">${typeEmojis[doc.type]}</span>
+              <div>
+                <div style="font-weight: 500;">${doc.name}</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">${doc.size}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-primary">${doc.type.toUpperCase()}</span></td>
+          <td>${doc.folder}</td>
+          <td>${doc.createdBy}</td>
+          <td>${doc.createdAt}</td>
+          <td>${doc.views}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="icon-btn" onclick="event.stopPropagation(); alert('ダウンロード（デモ）')">⬇️</button>
+              <button class="icon-btn" onclick="event.stopPropagation(); alert('共有（デモ）')">🔗</button>
+              <button class="icon-btn" onclick="event.stopPropagation(); alert('削除（デモ）')">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+
+    // ビュー切り替え
+    function switchView(view) {
+      const gridView = document.getElementById('gridView');
+      const listView = document.getElementById('listView');
+      const gridBtn = document.getElementById('gridViewBtn');
+      const listBtn = document.getElementById('listViewBtn');
+
+      if (view === 'grid') {
+        gridView.style.display = 'grid';
+        listView.style.display = 'none';
+        gridBtn.style.backgroundColor = 'var(--primary-color)';
+        gridBtn.style.color = 'white';
+        listBtn.style.backgroundColor = 'transparent';
+        listBtn.style.color = 'var(--text-secondary)';
+      } else {
+        gridView.style.display = 'none';
+        listView.style.display = 'block';
+        listBtn.style.backgroundColor = 'var(--primary-color)';
+        listBtn.style.color = 'white';
+        gridBtn.style.backgroundColor = 'transparent';
+        gridBtn.style.color = 'var(--text-secondary)';
+      }
+    }
+  </script>
+</body>
+</html>
