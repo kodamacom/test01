@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文書詳細 - DocuMind</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>📁 DocuMind</h1>
+      </div>
+      <nav>
+        <ul class="sidebar-nav">
+          <li><a href="dashboard.html"><span class="icon">🏠</span> ダッシュボード</a></li>
+          <li><a href="documents.html" class="active"><span class="icon">📄</span> 文書一覧</a></li>
+          <li><a href="search.html"><span class="icon">🔍</span> AI検索</a></li>
+          <li><a href="#"><span class="icon">📁</span> フォルダ</a></li>
+          <li><a href="#"><span class="icon">⭐</span> お気に入り</a></li>
+          <li><a href="#"><span class="icon">🕐</span> 最近の文書</a></li>
+          <li><a href="#"><span class="icon">👥</span> 共有中</a></li>
+          <li><a href="#"><span class="icon">⚙️</span> 設定</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+      <!-- ヘッダー -->
+      <header class="header">
+        <div class="search-bar">
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="AI検索で文書を探す（例: 昨年の売上報告書はどこ？）" onclick="window.location.href='search.html'">
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary btn-sm" onclick="alert('アップロード機能（デモ）')">
+            ⬆️ アップロード
+          </button>
+          <div style="position: relative;">
+            <button class="icon-btn" style="position: relative;">
+              🔔
+              <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: red; border-radius: 50%;"></span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar">山</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 500;">山田太郎</div>
+              <div style="font-size: 12px; color: var(--text-secondary);">管理者</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- コンテンツ -->
+      <div class="content">
+        <!-- パンくずリスト -->
+        <div style="margin-bottom: 24px; font-size: 14px;">
+          <a href="documents.html" style="color: var(--primary-color); text-decoration: none;">文書一覧</a>
+          <span style="margin: 0 8px; color: var(--text-secondary);">/</span>
+          <span id="folderName" style="color: var(--text-secondary);">経営資料</span>
+          <span style="margin: 0 8px; color: var(--text-secondary);">/</span>
+          <span id="documentName">2025年度_事業計画書.pdf</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+          <!-- 文書プレビュー -->
+          <div>
+            <div class="card" style="margin-bottom: 24px;">
+              <div class="card-header">
+                <h2 id="docTitle">2025年度_事業計画書.pdf</h2>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-sm btn-primary" onclick="alert('ダウンロード（デモ）')">⬇️ ダウンロード</button>
+                  <button class="btn btn-sm btn-secondary" onclick="alert('共有（デモ）')">🔗 共有</button>
+                  <button class="icon-btn" onclick="alert('その他のオプション（デモ）')">⋯</button>
+                </div>
+              </div>
+
+              <!-- プレビュー -->
+              <div style="background: #f3f4f6; border-radius: 8px; padding: 48px; text-align: center; min-height: 600px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                <div style="font-size: 120px; margin-bottom: 24px;">📕</div>
+                <h3 style="color: var(--text-primary); margin-bottom: 16px;">PDF プレビュー</h3>
+                <p style="color: var(--text-secondary); font-size: 14px; max-width: 400px;">
+                  本番環境では、ここに文書のプレビューが表示されます。<br>
+                  PDFビューアーを使用して、ブラウザ上で文書を閲覧できます。
+                </p>
+                <button class="btn btn-primary" style="margin-top: 24px;" onclick="alert('フルスクリーンで開く（デモ）')">
+                  🔍 フルスクリーンで開く
+                </button>
+              </div>
+            </div>
+
+            <!-- AI要約 -->
+            <div class="card">
+              <div class="card-header">
+                <h2>🤖 AI要約</h2>
+                <button class="btn btn-sm btn-secondary" onclick="alert('要約を再生成（デモ）')">🔄 再生成</button>
+              </div>
+              <div style="padding: 16px; background: rgba(59, 130, 246, 0.05); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <p id="aiSummary" style="line-height: 1.8;">
+                  2025年度の事業計画について、売上目標5億円、新規顧客獲得100社を掲げています。主要戦略としてAI機能の強化、海外展開、パートナーシップの拡大を計画しています。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- サイドバー（文書情報） -->
+          <div>
+            <!-- 基本情報 -->
+            <div class="card" style="margin-bottom: 24px;">
+              <div class="card-header">
+                <h2>基本情報</h2>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">ファイル形式</div>
+                  <div><span class="badge badge-danger" id="docType">PDF</span></div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">ファイルサイズ</div>
+                  <div id="docSize">2.4 MB</div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">フォルダ</div>
+                  <div id="docFolder">📁 経営資料</div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">作成者</div>
+                  <div id="docCreator">👤 山田太郎</div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">作成日</div>
+                  <div id="docCreatedAt">📅 2025-11-01</div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">閲覧数</div>
+                  <div id="docViews">👁️ 45回</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- タグ -->
+            <div class="card" style="margin-bottom: 24px;">
+              <div class="card-header">
+                <h2>タグ</h2>
+                <button class="btn btn-sm btn-secondary" onclick="alert('タグを追加（デモ）')">➕</button>
+              </div>
+              <div id="docTags" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <span class="badge badge-primary">重要</span>
+                <span class="badge badge-primary">2025年度</span>
+                <span class="badge badge-primary">事業計画</span>
+              </div>
+            </div>
+
+            <!-- 権限 -->
+            <div class="card" style="margin-bottom: 24px;">
+              <div class="card-header">
+                <h2>共有設定</h2>
+                <button class="btn btn-sm btn-secondary" onclick="alert('共有設定を変更（デモ）')">⚙️</button>
+              </div>
+              <div style="font-size: 14px;">
+                <div style="padding: 12px; background: var(--background); border-radius: 6px; margin-bottom: 8px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="width: 32px; height: 32px; border-radius: 50%; background: #10B981; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">
+                        佐
+                      </div>
+                      <div>
+                        <div style="font-weight: 500;">佐藤花子</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">編集可能</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding: 12px; background: var(--background); border-radius: 6px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div style="width: 32px; height: 32px; border-radius: 50%; background: #F59E0B; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">
+                        営
+                      </div>
+                      <div>
+                        <div style="font-weight: 500;">営業部</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">閲覧のみ</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- アクティビティ -->
+            <div class="card">
+              <div class="card-header">
+                <h2>アクティビティ</h2>
+              </div>
+              <div style="font-size: 13px;">
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                  <div style="font-weight: 500;">山田太郎さんがアップロード</div>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 4px;">2時間前</div>
+                </div>
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                  <div style="font-weight: 500;">佐藤花子さんが閲覧</div>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 4px;">3時間前</div>
+                </div>
+                <div style="padding: 12px 0;">
+                  <div style="font-weight: 500;">鈴木一郎さんがコメント</div>
+                  <div style="color: var(--text-secondary); font-size: 12px; margin-top: 4px;">5時間前</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="data/mock-data.js"></script>
+  <script>
+    // URLパラメータから文書IDを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const docId = urlParams.get('id') || '1';
+
+    // 文書データを取得
+    const doc = mockData.documents.find(d => d.id == docId) || mockData.documents[0];
+
+    // データを表示
+    document.getElementById('documentName').textContent = doc.name;
+    document.getElementById('folderName').textContent = doc.folder;
+    document.getElementById('docTitle').textContent = doc.name;
+    document.getElementById('docType').textContent = doc.type.toUpperCase();
+    document.getElementById('docSize').textContent = doc.size;
+    document.getElementById('docFolder').textContent = `📁 ${doc.folder}`;
+    document.getElementById('docCreator').textContent = `👤 ${doc.createdBy}`;
+    document.getElementById('docCreatedAt').textContent = `📅 ${doc.createdAt}`;
+    document.getElementById('docViews').textContent = `👁️ ${doc.views}回`;
+    document.getElementById('aiSummary').textContent = doc.summary;
+
+    // タグ表示
+    const docTags = document.getElementById('docTags');
+    docTags.innerHTML = doc.tags.map(tag => `<span class="badge badge-primary">${tag}</span>`).join('');
+  </script>
+</body>
+</html>

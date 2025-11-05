@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ダッシュボード - DocuMind</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- サイドバー -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <h1>📁 DocuMind</h1>
+      </div>
+      <nav>
+        <ul class="sidebar-nav">
+          <li><a href="dashboard.html" class="active"><span class="icon">🏠</span> ダッシュボード</a></li>
+          <li><a href="documents.html"><span class="icon">📄</span> 文書一覧</a></li>
+          <li><a href="search.html"><span class="icon">🔍</span> AI検索</a></li>
+          <li><a href="#"><span class="icon">📁</span> フォルダ</a></li>
+          <li><a href="#"><span class="icon">⭐</span> お気に入り</a></li>
+          <li><a href="#"><span class="icon">🕐</span> 最近の文書</a></li>
+          <li><a href="#"><span class="icon">👥</span> 共有中</a></li>
+          <li><a href="#"><span class="icon">⚙️</span> 設定</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+      <!-- ヘッダー -->
+      <header class="header">
+        <div class="search-bar">
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="AI検索で文書を探す（例: 昨年の売上報告書はどこ？）" onclick="window.location.href='search.html'">
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary btn-sm" onclick="alert('アップロード機能（デモ）')">
+            ⬆️ アップロード
+          </button>
+          <div style="position: relative;">
+            <button class="icon-btn" style="position: relative;">
+              🔔
+              <span style="position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: red; border-radius: 50%;"></span>
+            </button>
+          </div>
+          <div class="user-menu">
+            <div class="user-avatar" id="userAvatar">山</div>
+            <div>
+              <div style="font-size: 14px; font-weight: 500;" id="userName">山田太郎</div>
+              <div style="font-size: 12px; color: var(--text-secondary);" id="userRole">管理者</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- コンテンツ -->
+      <div class="content">
+        <div class="page-header">
+          <h1>ダッシュボード</h1>
+          <p>組織全体の文書管理状況を確認できます</p>
+        </div>
+
+        <!-- 統計カード -->
+        <div class="stats-grid" id="statsGrid">
+          <!-- JavaScriptで動的に生成 -->
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+          <!-- 最近の文書 -->
+          <div class="card">
+            <div class="card-header">
+              <h2>最近開いた文書</h2>
+              <a href="documents.html" style="color: var(--primary-color); text-decoration: none; font-size: 14px;">すべて表示 →</a>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>文書名</th>
+                    <th>種類</th>
+                    <th>開いた時刻</th>
+                  </tr>
+                </thead>
+                <tbody id="recentDocuments">
+                  <!-- JavaScriptで動的に生成 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- アクティビティ -->
+          <div class="card">
+            <div class="card-header">
+              <h2>最近のアクティビティ</h2>
+            </div>
+            <div id="activities" style="font-size: 14px;">
+              <!-- JavaScriptで動的に生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- フォルダ一覧 -->
+        <div class="card">
+          <div class="card-header">
+            <h2>フォルダ</h2>
+            <button class="btn btn-sm btn-secondary" onclick="alert('新規フォルダ作成（デモ）')">
+              ➕ 新規作成
+            </button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;" id="folders">
+            <!-- JavaScriptで動的に生成 -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="data/mock-data.js"></script>
+  <script>
+    // ユーザー情報表示
+    document.getElementById('userName').textContent = mockData.user.name;
+    document.getElementById('userRole').textContent = mockData.user.role;
+    document.getElementById('userAvatar').textContent = mockData.user.avatar;
+
+    // 統計カード生成
+    const statsGrid = document.getElementById('statsGrid');
+    const stats = [
+      { title: '総文書数', value: mockData.stats.totalDocuments, icon: '📄', color: 'primary', change: '+12% 先月比' },
+      { title: 'ストレージ使用量', value: mockData.stats.storageUsed, icon: '💾', color: 'success', change: `${mockData.stats.storageLimit}中` },
+      { title: 'アクティブユーザー', value: mockData.stats.activeUsers, icon: '👥', color: 'primary', change: '今月' },
+      { title: 'AI検索回数', value: mockData.stats.aiSearches, icon: '🔍', color: 'warning', change: '今月' }
+    ];
+
+    stats.forEach(stat => {
+      statsGrid.innerHTML += `
+        <div class="stat-card ${stat.color}">
+          <div class="stat-card-header">
+            <div class="stat-card-title">${stat.title}</div>
+            <div class="stat-card-icon">${stat.icon}</div>
+          </div>
+          <div class="stat-card-value">${stat.value}</div>
+          <div class="stat-card-change">${stat.change}</div>
+        </div>
+      `;
+    });
+
+    // 最近の文書
+    const recentDocs = document.getElementById('recentDocuments');
+    mockData.recentDocuments.forEach(doc => {
+      const typeEmoji = {
+        'pdf': '📕',
+        'docx': '📘',
+        'xlsx': '📗',
+        'pptx': '📙'
+      };
+      recentDocs.innerHTML += `
+        <tr onclick="window.location.href='document-detail.html?id=${doc.id}'" style="cursor: pointer;">
+          <td>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 24px;">${typeEmoji[doc.type] || '📄'}</span>
+              <span>${doc.name}</span>
+            </div>
+          </td>
+          <td><span class="badge badge-primary">${doc.type.toUpperCase()}</span></td>
+          <td><span class="text-muted">${doc.openedAt}</span></td>
+        </tr>
+      `;
+    });
+
+    // アクティビティ
+    const activities = document.getElementById('activities');
+    mockData.activities.forEach(activity => {
+      const actionIcon = {
+        'アップロード': '⬆️',
+        '編集': '✏️',
+        '共有': '🔗',
+        'コメント': '💬'
+      };
+      activities.innerHTML += `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: start; gap: 8px;">
+            <span>${actionIcon[activity.action] || '📌'}</span>
+            <div style="flex: 1;">
+              <div><strong>${activity.user}</strong>さんが<strong>${activity.action}</strong></div>
+              <div style="color: var(--text-secondary); font-size: 13px;">${activity.document}</div>
+              <div style="color: var(--text-secondary); font-size: 12px; margin-top: 4px;">${activity.time}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    // フォルダ一覧
+    const folders = document.getElementById('folders');
+    mockData.folders.forEach(folder => {
+      folders.innerHTML += `
+        <div style="padding: 16px; background: var(--background); border-radius: 8px; cursor: pointer; transition: all 0.2s;"
+             onmouseover="this.style.background='var(--border-color)'"
+             onmouseout="this.style.background='var(--background)'">
+          <div style="font-size: 32px; margin-bottom: 8px;">${folder.icon}</div>
+          <div style="font-weight: 600; margin-bottom: 4px;">${folder.name}</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">${folder.count}個の文書</div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
